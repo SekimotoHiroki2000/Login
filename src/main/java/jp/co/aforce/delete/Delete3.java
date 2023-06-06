@@ -1,6 +1,7 @@
-package jp.co.aforce.login;
+package jp.co.aforce.delete;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,20 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jp.co.aforce.DAO.LoginDAO;
-import jp.co.aforce.bean.LoginBean;
+import jp.co.aforce.DAO.MemberDAO;
+import jp.co.aforce.bean.MemberBean;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class Delete3
  */
-@WebServlet("/jsp/login")
-public class Login extends HttpServlet {
+@WebServlet("/view/delete3")
+public class Delete3 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public Delete3() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,28 +39,24 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name = request.getParameter("name");
-		String pass = request.getParameter("pass");
+		PrintWriter out = response.getWriter();
+		String member_id = request.getParameter("member_id");
+		MemberBean d = new MemberBean();
+		d.setMember_id(member_id);
 		
-		LoginDAO log = new LoginDAO();
+		MemberDAO dao = new MemberDAO();
 		try {
-			LoginBean login = log.search(name, pass);
-			request.setAttribute("login", login);
-			
-			if(login != null) {
-				request.getRequestDispatcher("searchsuccess.jsp").forward(request, response);
+			int line = dao.delete(d);
+			if(line > 0) {		
+				request.getRequestDispatcher("delete_success.jsp").forward(request, response);
 			}else {
-				System.out.println("おあおあおあお");
+				out.println("会員情報の削除に失敗しました。");
 			}
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-	
-				
-}
+	}
+
 }

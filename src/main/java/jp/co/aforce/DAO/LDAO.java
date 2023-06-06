@@ -11,7 +11,7 @@ public class LDAO {
 	public Connection getConnection() throws Exception{
 		if (ds == null) {
 			InitialContext ic = new InitialContext();
-			ds = (DataSource)ic.lookup("java:/comp/env/jdbc/logindb");
+			ds = (DataSource)ic.lookup("java:/comp/env/jdbc/member_information");
 		}
 		return ds.getConnection();
 	}
